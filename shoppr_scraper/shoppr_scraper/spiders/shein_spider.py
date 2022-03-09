@@ -27,7 +27,8 @@ class SheinSpider(scrapy.Spider):
 
     def parse(self, response):
         results = []
-        products = response.css('section.j-expose__product-item')[:10]
+        response_products = response.css('section.j-expose__product-item')
+        products = response_products if len(response_products) < 10 else response_products[:10]
         for each_product in products:
             product_id  = each_product.css('div.S-product-item__wrapper a::attr(href)').re('p-([0-9]+)-cat')[0]
             product_std_price, product_sales_price, unit_discount = self.get_price(product_id)
@@ -35,11 +36,12 @@ class SheinSpider(scrapy.Spider):
             product_name = each_product.css("div.S-product-item__name a::text").get().strip()
             product_img_url = "https:" + each_product.css("div.S-product-item__wrapper a.j-expose__product-item-img img::attr(data-src)").extract_first()
             yield {
+            'product_brand': 'shein',
             'product_id': product_id,
+            'product_name': product_name,
+            'product_img_url': product_img_url,
+            'product_url': self.prefix_url + product_url,
             'product_std_price': product_std_price,
             'product_sales_price': product_sales_price,
             'unit_discount': unit_discount,
-            'product_url': self.prefix_url + product_url,
-            'product_name': product_name,
-            'product_image': product_img_url,
             }

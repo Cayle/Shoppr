@@ -5,9 +5,7 @@ from scrapyd_api import ScrapydAPI
 import json
 from time import sleep
 import os
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the app's index.")
+from django.shortcuts import render
 
 
 def clean_data_files():
@@ -25,7 +23,17 @@ def search(request, search_word):
 	sleep(30)
 	shein_file  = open('shoppr_app/shein_items.json')
 	boohoo_file =  open('shoppr_app/boohoo_items.json')
-	data =  json.load(shein_file)
-	data.extend(json.load(boohoo_file))
+	products_data =  json.load(shein_file)
+	products_data.extend(json.load(boohoo_file))
+	products_data.sort(key = lambda product: float(product['product_sales_price']))
+	data = {'search_word': search_word, 'number_of_results': len(products_data), 'results': products_data}
+
 	return  JsonResponse(data, safe=False)
+
+
+def index(request):
+	return render(request, 'shoppr_app/index.html', {})
+
+def shop(request):
+	return render(request, 'shoppr_app/shop.html', {})
 

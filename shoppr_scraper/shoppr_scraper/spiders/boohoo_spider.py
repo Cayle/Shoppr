@@ -17,19 +17,25 @@ class BoohooSpider(scrapy.Spider):
         yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
-        results = []
-        products = response.css('li.grid-tile')[:10]
+        response_products = response.css('li.grid-tile')
+        products = response_products if len(response_products) < 10 else response_products[:10]
         for each_product in products:
             product_url = self.base_url + each_product.css('div.product-tile-name a::attr(href)').extract_first()
+            maybe_product__id = each_product.css('div.product-tile-name a::attr(href)').re("/([A-Z].+).html")
+            product_id = None if not maybe_product__id else maybe_product__id[0]
             product_name = each_product.css('div.product-tile-name a::text').extract_first().strip('\n')
-            product_std_price = each_product.css('div.product-pricing span.product-standard-price::text').extract_first().strip('\n')
-            product_sales_price =each_product.css(' div.product-pricing span.product-sales-price::text').re("\$[0-9]+\.[0-9]+")[0]
-            product_image =  "https:" + each_product.css('input.js-primary-image-default-url::attr(value)').extract_first()
+            product_std_price = each_product.css('div.product-pricing span.product-standard-price::text').re("\$([0-9]+\.[0-9]+)")[0]
+            product_sales_price =each_product.css(' div.product-pricing span.product-sales-price::text').re("\$([0-9]+\.[0-9]+)")[0]
+            product_img_url = "https:" + each_product.css('input.js-primary-image-default-url::attr(value)').re("(.+)\?\$")[0] + ".jpg"
+            unit_discount = str(int(((float(product_std_price) - float(product_sales_price)) / float(product_std_price) ) * 100))
             yield {
-            'product_url': product_url,
+            'product_brand': 'boohoo',
+            'product_id': product_id,
             'product_name': product_name,
+            'product_img_url': product_img_url,
+            'product_url': product_url,
             'product_std_price': product_std_price,
             'product_sales_price': product_sales_price,
-            'product_image': product_image,
+            'unit_discount': unit_discount
             }
  

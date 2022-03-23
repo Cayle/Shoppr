@@ -15,17 +15,23 @@ def clean_data_files():
 	if os.path.exists('shoppr_app/boohoo_items.json'):
 		os.remove('shoppr_app/boohoo_items.json')
 
+	if os.path.exists('shoppr_app/asos_items.json'):
+		os.remove('shoppr_app/asos_items.json')
+
 
 def search(search_word):
 	clean_data_files()
 	scrapyd = ScrapydAPI('http://localhost:6800')
 	scrapyd.schedule('shoppr_scraper', 'shein', search_word=search_word)
 	scrapyd.schedule('shoppr_scraper', 'boohoo', search_word=search_word)
-	sleep(30)
+	scrapyd.schedule('shoppr_scraper', 'asos', search_word=search_word)
+	sleep(50)
 	shein_file  = open('shoppr_app/shein_items.json')
 	boohoo_file =  open('shoppr_app/boohoo_items.json')
+	asos_file =  open('shoppr_app/asos_items.json')
 	products_data =  json.load(shein_file)
 	products_data.extend(json.load(boohoo_file))
+	products_data.extend(json.load(asos_file))
 	products_data.sort(key = lambda product: float(product['product_sales_price']))
 	data = {'search_word': search_word, 'number_of_results': len(products_data), 'results': products_data}
 	return data 
@@ -34,6 +40,8 @@ def search_json(request, search_word):
 	data = search(search_word)
 	return  JsonResponse(data, safe=False)
 
+def base(request):
+	return render(request, 'shoppr_app/base.html', {})
 
 def index(request):
 	return render(request, 'shoppr_app/index.html', {})

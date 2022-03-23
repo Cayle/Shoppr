@@ -649,6 +649,12 @@ ol {
 	color: #252525;
 }
 
+.inner-header .nav-right li.cart-price a {
+	font-size: 18px;
+	font-weight: 700;
+	color: #252525;
+}
+
 .nav-item {
 	background: #252525;
 	display: -webkit-box;

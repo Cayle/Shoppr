@@ -1,0 +1,29 @@
+{% extends 'shoppr_app/base.html' %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+<div class="collapse navbar-collapse" id="navbarText">
+	<ul class="navbar-nav mr-auto">
+	  {% if user.is_authenticated %}
+	  
+	  <li class="nav-item">
+	    <a class="nav-link" href="{% url 'shoppr_app:logout' %}">Logout</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#">Welcome, {{user.username}}</a>
+	  </li>
+
+	  {% else %}
+
+	  <li class="nav-item">
+	    <a class="nav-link" href="{% url 'shoppr_app:login' %}">Login</a>
+	  </li>
+
+	  {% endif %}
+	</ul>
+</div>
+
+{% endblock %}

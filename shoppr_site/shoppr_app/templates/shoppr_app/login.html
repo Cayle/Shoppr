@@ -1,0 +1,56 @@
+{% extends 'shoppr_app/base.html' %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+ <!-- Login Section Begin -->
+    <div class="register-login-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="login-form">
+                        <h2>Login</h2>
+                        <form action="{% url 'shoppr_app:login' %}" method="POST">
+                        	{% csrf_token %}
+                        	<div class="group-input" id = "div_id_username">
+                                <label for="id_username" class="requiredField">Username *</label>
+                                <input type="text" id="id_username" name = "username" maxlength = '150' autofocus required autocapitalize="none">
+                            </div>
+                            <div id="div_id_password" class="group-input"> 
+                            	<label for="id_password" class="requiredField">Password *</label> 
+								<input type="password" name="password" autocomplete="current-password" required id="id_password"> 
+							</div>
+                            <!-- <div class="group-input gi-check">
+                                <div class="gi-more">
+                                    <label for="save-pass">
+                                        Save Password
+                                        <input type="checkbox" id="save-pass">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <a href="#" class="forget-pass">Forget your Password</a>
+                                </div>
+                            </div> -->
+                            <button type="submit" class="site-btn login-btn">Log In</button>
+                        </form>
+                        <div class="switch-login">
+                            <a href="{% url 'shoppr_app:register' %}" class="or-login">Or Create An Account</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login Form Section End -->
+
+<!-- <div class="container py-5">
+  <h1>Login</h1>
+  <form method="POST">
+    {% csrf_token %}
+    {{ login_form|crispy }}
+    <button class="btn btn-primary" type="submit">Login</button>
+  </form>
+  <p class="text-center">Don't have an account? <a href="{% url 'shoppr_app:register' %}">Create an account</a>.</p>
+</div> -->
+
+{% endblock %}

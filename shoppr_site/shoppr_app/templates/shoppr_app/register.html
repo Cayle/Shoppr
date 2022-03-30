@@ -1,0 +1,79 @@
+{% extends 'shoppr_app/base.html' %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+{% load static %}
+
+	{% if messages %}
+		<ul class="messages">
+		    {% for message in messages %}
+		    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		    {% endfor %}
+		</ul>
+	{% endif %}
+	<center>
+		<div>
+			<a href="{% provider_login_url 'google' %}" class="text-dark">
+				<img src="{% static 'shoppr_app/img/google_sign_in.png' %}" style="width:14rem; height:auto">
+			</a>
+		</div>
+	</center>
+
+  <div style="width: 100%; height: 15px; border-bottom: 1px solid lightgray; text-align: center">
+    <span class="text-muted" style="margin-top:-15% !important; font-size: 11px; background-color: white; padding: 0px 10px;">
+      OR
+    </span>
+  </div>
+
+  <br><br>
+
+    <div class="register-login-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="register-form">
+                        <h2>Register</h2>
+                        <form method="post" action="{% url 'shoppr_app:register' %}">
+                        	{% csrf_token %}
+                            <div class="group-input" id = "div_id_username">
+                                <label for="id_username" class="requiredField">Username *</label>
+                                <input type="text" id="id_username" name = "username" maxlength = '150' autofocus required >
+                            </div>
+                            <div class="group-input" id = "div_id_email">
+                                <label for="id_email" class="requiredField">Email address *</label>
+                                <input type="email" id="id_email" name = "email" required >
+                            </div>
+
+                            <div class="group-input" id="div_id_password1">
+                                <label for="id_password1" class="requiredField">Password *</label>
+                                <input type="password" id="id_password1" name="password1" required autocomplete='new_password'>
+                            </div>
+                            <div class="group-input" id="div_id_password2">
+                                <label for="id_password2" class="requiredField">Confirm Password *</label>
+                                <input type="password" id="id_password2" name="password2" required autocomplete='new_password'>
+                            </div>
+                            <button type="submit" class="site-btn register-btn">REGISTER</button>
+                        </form>
+                        <br>
+                        <div class="switch-login">
+                            <a href="{% url 'shoppr_app:login' %}" class="or-login">Or Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- <form method="post">
+    {% csrf_token %}
+    {{ register_form|crispy }}
+    <button type="submit"  class="btn btn-primary">Register</button>
+
+  </form>
+  <br>
+  <p class="text-center">Already have an account? <a href="{% url 'shoppr_app:login' %}">Log In</a>.</p> -->
+
+
+
+{% endblock %}

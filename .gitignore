@@ -131,3 +131,6 @@ dmypy.json
 
 # DStore
 *.DS_Store
+
+#Twist
+twistd.pid

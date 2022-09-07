@@ -13,6 +13,18 @@ SPIDER_MODULES = ['shoppr_scraper.spiders']
 NEWSPIDER_MODULE = 'shoppr_scraper.spiders'
 
 
+# Rotating proxies
+# ROTATING_PROXY_LIST = [
+#     '112.133.214.242',
+#     '20.230.193.232',
+#     '165.227.65.1',
+#     '144.168.140.158',
+#     '179.60.178.81',
+#     '91.242.228.137',
+#     '149.18.29.94',
+#     '85.208.211.253',
+# ]
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'shoppr_scraper (+http://www.yourdomain.com)'
 
@@ -25,7 +37,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 0.25
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -53,6 +65,11 @@ ROBOTSTXT_OBEY = False
 #DOWNLOADER_MIDDLEWARES = {
 #    'shoppr_scraper.middlewares.ShopprScraperDownloaderMiddleware': 543,
 #}
+
+# DOWNLOADER_MIDDLEWARES = {
+#     'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+#     'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+# }
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html

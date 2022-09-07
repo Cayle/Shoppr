@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     # crsipy tags
     'crispy_forms',
+    # Django rest frameworks
+    'corsheaders',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'shoppr_site.urls'
@@ -154,3 +158,12 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'shoppr_app:index'
+
+# White listing the localhost:3000 and others port
+# for React
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'http://localhost:3003',
+)

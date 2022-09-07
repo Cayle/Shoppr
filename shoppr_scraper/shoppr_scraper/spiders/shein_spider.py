@@ -16,13 +16,16 @@ class SheinSpider(scrapy.Spider):
     }
 
     def start_requests(self):
+        """
+        https://us.shein.com/pdsearch/black+jackets
+        """
         self.prefix_url = "https://us.shein.com"
         url = f"{self.prefix_url}/pdsearch/{self.search_word}"
         yield scrapy.Request(url=url, callback=self.parse)
 
     def get_price(self, product_id):
         r = requests.get(f"{self.prefix_url}/goods_detail_v2_realtime/realtime_price?_lang=en&_ver=1.1.8&currency=&goods_ids={product_id}").json()
-        prices = r['prices'][str(product_id)]
+        prices = r['data'][str(product_id)]
         return prices['retailPrice']['usdAmount'], prices['salePrice']['usdAmount'], prices['unit_discount']
 
     def parse(self, response):

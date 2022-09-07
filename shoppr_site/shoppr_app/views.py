@@ -12,6 +12,9 @@ from time import sleep
 import os
 from django.shortcuts import render
 
+SHEIN_FILE_PATH = "shoppr_app/shein_items.json"
+ASOS_FILE_PATH = "shoppr_app/asos_items.json"
+
 
 def logout_request(request):
 	logout(request)
@@ -52,29 +55,39 @@ def register(request):
 
 
 def clean_data_files():
-	if os.path.exists('shoppr_app/shein_items.json'):
-  		os.remove('shoppr_app/shein_items.json')
+	if os.path.exists(SHEIN_FILE_PATH):
+		os.remove(SHEIN_FILE_PATH)
 
-	if os.path.exists('shoppr_app/boohoo_items.json'):
-		os.remove('shoppr_app/boohoo_items.json')
+	# if os.path.exists('shoppr_app/boohoo_items.json'):
+	# 	os.remove('shoppr_app/boohoo_items.json')
 
-	if os.path.exists('shoppr_app/asos_items.json'):
-		os.remove('shoppr_app/asos_items.json')
+	if os.path.exists(ASOS_FILE_PATH):
+		os.remove(ASOS_FILE_PATH)
 
 
 def search(search_word):
 	clean_data_files()
 	scrapyd = ScrapydAPI('http://localhost:6800')
 	scrapyd.schedule('shoppr_scraper', 'shein', search_word=search_word)
-	scrapyd.schedule('shoppr_scraper', 'boohoo', search_word=search_word)
 	scrapyd.schedule('shoppr_scraper', 'asos', search_word=search_word)
 	sleep(50)
-	shein_file  = open('shoppr_app/shein_items.json')
-	boohoo_file =  open('shoppr_app/boohoo_items.json')
-	asos_file =  open('shoppr_app/asos_items.json')
-	products_data =  json.load(shein_file)
-	products_data.extend(json.load(boohoo_file))
-	products_data.extend(json.load(asos_file))
+	with open(SHEIN_FILE_PATH, encoding='utf-8', errors='ignore') as shein_file:
+		products_data = json.load(shein_file, strict=False)
+		
+	with open(ASOS_FILE_PATH, encoding='utf-8', errors='ignore') as asos_file:
+		products_data.extend(json.load(asos_file, strict=False))
+
+	# with open(SHEIN_FILE_PATH, 'r') as shein_file:
+	# 	if shein_file.read():
+	# 		products_data = json.loads(shein_file.read())
+	# with open(ASOS_FILE_PATH, 'r') as asos_file:
+	# 	if asos_file.read():
+	# 		products_data.extend(json.loads(asos_file.read()))
+
+	# shein_file  = open('shoppr_app/shein_items.json')
+	# asos_file =  open('shoppr_app/asos_items.json')
+	# products_data = json.load(shein_file)
+	# products_data.extend(json.load(asos_file))
 	products_data.sort(key = lambda product: float(product['product_sales_price']))
 	data = {'search_word': search_word, 'number_of_results': len(products_data), 'results': products_data}
 	return data  

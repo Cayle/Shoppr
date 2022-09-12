@@ -1,9 +1,14 @@
+import re
 from django.shortcuts import  render, redirect
 from .forms import NewUserForm
 from django.contrib import messages
 
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm 
+
+from rest_framework import permissions
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
 
 from django.http import HttpResponse, JsonResponse
 from scrapyd_api import ScrapydAPI
@@ -40,18 +45,30 @@ def login_request(request):
 	form = AuthenticationForm()
 	return render(request, "shoppr_app/login.html", context={"login_form":form})
 
+@api_view(['POST'])
 def register(request):
 	if request.method == "POST":
+		print(request.POST)
 		form = NewUserForm(request.POST)
+		# print(form)
 		if form.is_valid():
 			user = form.save()
-			messages.success(request, "Registration successful." )
-			login(request, user, backend="django.contrib.auth.backends.ModelBackend")
-			return redirect("shoppr_app:index")
+			response = {
+				'status': 'OK',
+				'user': user,
+			}
+			# messages.success(request, "Registration successful." )
+			# login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+			# return redirect("shoppr_app:index")
+			return Response(response)
 		else:
-			messages.error(request, "Unsuccessful registration. Invalid information.")
-	form = NewUserForm()
-	return render (request, "shoppr_app/register.html", context={"register_form":form})
+			response = {
+				'status': 'ERROR',
+			}
+			# messages.error(request, "Unsuccessful registration. Invalid information.")
+			return Response(response)
+	# form = NewUserForm()
+	# return render (request, "shoppr_app/register.html", context={"register_form":form})
 
 
 def clean_data_files():

@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('shoppr/', include('shoppr_app.urls')),
     path('accounts/', include('allauth.urls')),
+     path('auth_api/', include('shoppr_app.auth_api.urls'))
 ]

@@ -50,22 +50,23 @@ def register(request):
 	if request.method == "POST":
 		print(request.POST)
 		form = NewUserForm(request.POST)
-		# print(form)
+		print(form)
 		if form.is_valid():
 			user = form.save()
 			response = {
 				'status': 'OK',
-				'user': user,
 			}
 			# messages.success(request, "Registration successful." )
 			# login(request, user, backend="django.contrib.auth.backends.ModelBackend")
 			# return redirect("shoppr_app:index")
+			print(response)
 			return Response(response)
 		else:
 			response = {
 				'status': 'ERROR',
 			}
 			# messages.error(request, "Unsuccessful registration. Invalid information.")
+			print(response)
 			return Response(response)
 	# form = NewUserForm()
 	# return render (request, "shoppr_app/register.html", context={"register_form":form})

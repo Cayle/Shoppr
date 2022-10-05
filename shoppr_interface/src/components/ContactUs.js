@@ -3,16 +3,16 @@ import '../style.css';
 import Header from './Header';
 import NavBar from './NavBar';
 
-function About() {
+function ContactUs() {
     return (
-        <div>
+        <div> 
             <div>
                 <h1>
-                    This is the About page. 
+                   This is the contact page.
                 </h1>
             </div>
         </div>
     );
 }
 
-export default About;
+export default ContactUs;

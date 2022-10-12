@@ -1,6 +1,7 @@
 import {useState, React} from 'react';
 import '../style.css';
 import ShopprBase from './../api/ShopprBase';
+import {Link} from  'react-router-dom'
 
 function Register() {
     const initialUserInfo = {username: '', email: '', password1: '', password2: ''}
@@ -19,7 +20,7 @@ function Register() {
           
                           <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
           
-                          <form class="mx-1 mx-md-4">
+                          <form class="mx-1 mx-md-4" action='http://127.0.0.1:8000/shoppr/register' method='POST'>
           
                             <div class="d-flex flex-row align-items-center mb-4">
                               <i class="fas fa-user fa-lg me-3 fa-fw"></i>
@@ -54,10 +55,10 @@ function Register() {
                             </div>
           
                             <div class="form-check d-flex justify-content-center mb-5">
-                              <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
-                              <label class="form-check-label" for="form2Example3">
-                                I agree all statements in <a href="#!">Terms of service</a>
-                              </label>
+                              {/* <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
+                              <label class="form-check-label" for="form2Example3"> */}
+                                Already have an account? Log in <Link className='' to='/login'> here </Link>
+                              {/* </label> */}
                             </div>
           
                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">

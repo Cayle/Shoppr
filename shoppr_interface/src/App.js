@@ -12,6 +12,7 @@ import About from './components/About';
 import Spinner from './components/Spinner';
 import ContactUs from './components/ContactUs';
 import Register from './components/Register';
+import LogIn from './components/LogIn';
 
 function App() {
   const initialState =  {
@@ -82,9 +83,7 @@ function App() {
             <Route exact path='/contact-us' element= {<ContactUs/>} />
             <Route exact path='/' element = {HomePage()}/>
             <Route exact path='/register' element= {<Register/>} />
-            {/* <Route path="red" element={<Red />} />
-            <Route path="green" element={<Green />} />
-            <Route path="purple" element={<Purple />} /> */}
+            <Route exact path='/login' element = {<LogIn/>} />
          </Routes>
       </div>
       <Footer/>

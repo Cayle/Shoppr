@@ -1,7 +1,7 @@
 import {useState, React} from 'react';
 import '../style.css';
 import ShopprBase from './../api/ShopprBase';
-import {Link} from  'react-router-dom'
+import {Link, Redirect} from  'react-router-dom'
 
 function Register() {
     const initialUserInfo = {username: '', email: '', password1: '', password2: ''}

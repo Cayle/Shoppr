@@ -26,24 +26,44 @@ def logout_request(request):
 	messages.info(request, "You have successfully logged out.") 
 	return redirect("shoppr_app:index")
 
-
+@api_view(['POST'])
 def login_request(request):
 	if request.method == "POST":
-		form = AuthenticationForm(request, data=request.POST)
+		data1 = {
+					"username": "user_one", 
+					"password": "testuser101$"
+				}
+		print(request)
+		form = AuthenticationForm(request, data=request.data)
+		print(request.data)
 		if form.is_valid():
+			print("got here 1")
 			username = form.cleaned_data.get('username')
 			password = form.cleaned_data.get('password')
 			user = authenticate(username=username, password=password)
 			if user is not None:
 				login(request, user, backend="django.contrib.auth.backends.ModelBackend")
-				messages.info(request, f"You are now logged in as {username}.")
-				return redirect("shoppr_app:index")
+				response = {'status': 'OK'}
+				# messages.info(request, f"You are now logged in as {username}.")
+				# return redirect("shoppr_app:index")
+				# return Response(response)
+				return Response(response)
 			else:
-				messages.error(request,"User with the entered information does not exist. Check and try again.")
+				print("got here 2")
+				response = {'status': 'ERROR'}
+				# return Response(response)
+				return Response(response)
 		else:
-			messages.error(request,"Invalid username or password.")
-	form = AuthenticationForm()
-	return render(request, "shoppr_app/login.html", context={"login_form":form})
+			print("got here 3")
+			response = {'status': 'ERROR'}
+			# return Response(response)
+			return Response(response)
+	print("got here 4")
+	response = {'status': 'ERROR'}
+	# return Response(response)
+	return Response(response)
+	# form = AuthenticationForm()
+	# return render(request, "shoppr_app/login.html", context={"login_form":form})
 
 @api_view(['POST'])
 def register(request):

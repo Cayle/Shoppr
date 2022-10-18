@@ -1,10 +1,40 @@
 import {useState, React} from 'react';
 import '../style.css';
 import ShopprBase from './../api/ShopprBase';
+import {Link, Navigate, useNavigate} from  'react-router-dom';
+
+import axios from 'axios';
 
 function LogIn() {
-    const intialLoginInfo = {username: '', password1: ''}
+    const intialLoginInfo = {username: '', password: ''};
     const [loginInfo, setLoginInfo] = useState(intialLoginInfo);
+
+    const navigate = useNavigate();
+
+    function loginUser() {
+        if (loginInfo.password == '' || loginInfo.username == '') {
+            console.log("got here");
+            return;
+        }
+        // ShopprBase.post('/login', {username: loginInfo.username, password: loginInfo.password})
+        //   .then(function (response) {
+        //     console.log(response);
+        //     <Navigate to='/' />
+
+        //   })
+        //   .catch(function (error) {
+        //     console.log(error);
+        //   });
+        axios.post("http://127.0.0.1:8000/shoppr/login", {username: loginInfo.username, password: loginInfo.password})
+        .then(function(response) {
+            console.log(response.data);
+        }).catch(function(error) {
+            console.log(error);
+        });
+
+        console.log("got here");
+        <Navigate to="/register"/>
+    }
 
     function LoginForm() {
         return (
@@ -19,13 +49,19 @@ function LogIn() {
           
                           <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Log In</p>
           
-                          <form class="mx-1 mx-md-4" action='http://127.0.0.1:8000/shoppr/register' method='POST'>
+                          <div class="mx-1 mx-md-4">
           
                             <div class="d-flex flex-row align-items-center mb-4">
                               <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                               <div class="form-outline flex-fill mb-0">
-                                <input type="text" class="form-control" placeholder='Username' id="id_username" name = "username"/>
-                                {/* <label class="form-label">Your Name</label> */}
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    placeholder='Username' 
+                                    id="id_username" 
+                                    name = "username"
+                                    value={loginInfo.username}
+                                    onChange={(e) => setLoginInfo({username: e.target.value, password:loginInfo.password})}/>
                               </div>
                             </div>
           
@@ -33,23 +69,23 @@ function LogIn() {
                             <div class="d-flex flex-row align-items-center mb-4">
                               <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                               <div class="form-outline flex-fill mb-0">
-                                <input type="password" id="id_password1" name="password1" class="form-control" placeholder='Password'/>
+                                <input 
+                                    type="password" 
+                                    id="id_password" 
+                                    name="password" 
+                                    class="form-control" 
+                                    placeholder='Password'
+                                    value={loginInfo.password}
+                                    onChange={(e) => setLoginInfo({username: loginInfo.username, password: e.target.value})}/>
                                 {/* <label class="form-label" for="form3Example4c">Password</label> */}
                               </div>
                             </div>
           
-                            {/* <div class="form-check d-flex justify-content-center mb-5">
-                              <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
-                              <label class="form-check-label" for="form2Example3">
-                                I agree all statements in <a href="#!">Terms of service</a>
-                              </label>
-                            </div> */}
-          
                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                              <button  type="submit" class="btn btn-secondary btn-lg">Log In</button>
+                              <button type="submit" class="btn btn-secondary btn-lg" onClick={()=> loginUser()}>Log In</button>
                             </div>
           
-                          </form>
+                          </div>
           
                         </div>
                         <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">

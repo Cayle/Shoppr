@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm 
 
-from rest_framework import permissions
+from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
@@ -43,21 +43,28 @@ def login_request(request):
 			user = authenticate(username=username, password=password)
 			if user is not None:
 				login(request, user, backend="django.contrib.auth.backends.ModelBackend")
-				response = {'status': 'OK'}
+				print(f"User name is {user.get_username()}")
+				print(f"User ID is {user.password}")
+				user = {
+					'id': user.pk,
+					'username': user.get_username(),
+					'password': user.password
+				}
+				response = {'status': 'OK', 'user': user}
 				# messages.info(request, f"You are now logged in as {username}.")
 				# return redirect("shoppr_app:index")
 				# return Response(response)
-				return Response(response)
+				return Response(response, status = status.HTTP_200_OK)
 			else:
 				print("got here 2")
 				response = {'status': 'ERROR'}
 				# return Response(response)
-				return Response(response)
+				return Response(response, status = status.HTTP_400_BAD_REQUEST)
 		else:
 			print("got here 3")
 			response = {'status': 'ERROR'}
 			# return Response(response)
-			return Response(response)
+			return Response(response, status = status.HTTP_400_BAD_REQUEST)
 	print("got here 4")
 	response = {'status': 'ERROR'}
 	# return Response(response)
@@ -68,8 +75,8 @@ def login_request(request):
 @api_view(['POST'])
 def register(request):
 	if request.method == "POST":
-		print(request.POST)
-		form = NewUserForm(request.POST)
+		print(request.data)
+		form = NewUserForm(request.data)
 		print(form)
 		if form.is_valid():
 			user = form.save()
@@ -80,14 +87,14 @@ def register(request):
 			# login(request, user, backend="django.contrib.auth.backends.ModelBackend")
 			# return redirect("shoppr_app:index")
 			print(response)
-			return Response(response)
+			return Response(response, status = status.HTTP_200_OK)
 		else:
 			response = {
 				'status': 'ERROR',
 			}
 			# messages.error(request, "Unsuccessful registration. Invalid information.")
 			print(response)
-			return Response(response)
+			return Response(response, status.HTTP_400_BAD_REQUEST)
 	# form = NewUserForm()
 	# return render (request, "shoppr_app/register.html", context={"register_form":form})
 

@@ -8,6 +8,7 @@ import axios from 'axios';
 function LogIn() {
     const intialLoginInfo = {username: '', password: ''};
     const [loginInfo, setLoginInfo] = useState(intialLoginInfo);
+    const [loginSuccess, setLoginSuccess] = useState(0) // 1 for true, -1 for false
 
     const navigate = useNavigate();
 
@@ -16,18 +17,16 @@ function LogIn() {
             console.log("got here");
             return;
         }
-        // ShopprBase.post('/login', {username: loginInfo.username, password: loginInfo.password})
-        //   .then(function (response) {
-        //     console.log(response);
-        //     <Navigate to='/' />
-
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error);
-        //   });
         axios.post("http://127.0.0.1:8000/shoppr/login", {username: loginInfo.username, password: loginInfo.password})
         .then(function(response) {
             console.log(response.data);
+            if (response.data.status === "OK" ) {
+              setLoginSuccess(1)
+            } else if (response.data.status == "ERROR") {
+              setLoginSuccess(-1)
+            }
+            setLoginInfo(intialLoginInfo)
+            // navigate('/');
         }).catch(function(error) {
             console.log(error);
         });
@@ -46,7 +45,15 @@ function LogIn() {
                     <div class="card-body p-md-5">
                       <div class="row justify-content-center">
                         <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-          
+                        { loginSuccess === 1 &&
+                          <div class='alert-success' style={{borderRadius: 10 +'px', padding: 10 + 'px'}}>
+                            <span>User logged in successfully</span> <Link className='text-success' to='/'> Go home </Link>
+                          </div> }
+                        { loginSuccess === -1 && 
+                          <div class='alert-warning' style={{borderRadius: 10 +'px', padding: 10 + 'px'}}>
+                          <span>Username / Password combination not valid</span>
+                        </div>
+                        }
                           <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Log In</p>
           
                           <div class="mx-1 mx-md-4">

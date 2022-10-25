@@ -13,6 +13,7 @@ import Spinner from './components/Spinner';
 import ContactUs from './components/ContactUs';
 import Register from './components/Register';
 import LogIn from './components/LogIn';
+import { AuthContext } from './components/Context';
 
 function App() {
   const initialState =  {
@@ -68,26 +69,28 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <NavBar/>
-      {/* <li class="nav-item"><Link className='nav-link' to='/about'>About</Link></li> */}
-      <div className='routes-wrapper'>
-        {/** 
-           * Add Router
-           *        Add invidual Route for Orange, Red, Green and Purple
-           * Note: Refer react documentation for examples on how to add Routes
-           * This is where your child components will load
-  */}
-          <Routes>
-            <Route exact path="/about" element={ <About/> } />
-            <Route exact path='/contact-us' element= {<ContactUs/>} />
-            <Route exact path='/' element = {HomePage()}/>
-            <Route exact path='/register' element= {<Register/>} />
-            <Route exact path='/login' element = {<LogIn/>} />
-         </Routes>
+    <AuthContext.Provider>
+      <div className="App">
+        <NavBar/>
+        {/* <li class="nav-item"><Link className='nav-link' to='/about'>About</Link></li> */}
+        <div className='routes-wrapper'>
+          {/** 
+             * Add Router
+             *        Add invidual Route for Orange, Red, Green and Purple
+             * Note: Refer react documentation for examples on how to add Routes
+             * This is where your child components will load
+    */}
+            <Routes>
+              <Route exact path="/about" element={ <About/> } />
+              <Route exact path='/contact-us' element= {<ContactUs/>} />
+              <Route exact path='/' element = {HomePage()}/>
+              <Route exact path='/register' element= {<Register/>} />
+              <Route exact path='/login' element = {<LogIn/>} />
+          </Routes>
+        </div>
+        <Footer/>
       </div>
-      <Footer/>
-    </div>
+    </AuthContext.Provider>
   );
 }
 

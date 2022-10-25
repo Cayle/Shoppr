@@ -24,23 +24,27 @@ function NavBar() {
                             </ul>
                         </li>
                     </ul>
-                    <form class="d-flex me-xl-4">
+                    {/* <form class="d-flex me-xl-4">
                         <Link className='nav-link btn btn-outline-dark' to='/register'>
                             <span style = { {'color':"black"}}>
                                 <i class="bi bi-person-circle"></i>
                                 Sign In
                              </span>
                         </Link>
-                        {/* <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi bi-person-circle"></i>
-                            Sign In
-                        </button> */}
-                    </form>
+                    </form> */}
+                    <span style={{'color': 'black', 'margin': 10+'px'}}>
+                        Welcome, <b>user_two !</b>
+                    </span>
                     <form class="d-flex">
-                        <Link className='nav-link btn btn-outline-dark' to='/login'>
+                        {/* <Link className='nav-link btn btn-outline-dark' to='/login'>
                             <span style = { {'color':"black"}}>
                                 <i class="bi bi-person-circle"></i>
                                 Log In
+                             </span>
+                        </Link> */}
+                        <Link className='nav-link btn btn-outline-dark' to='/logout'>
+                            <span style = { {'color':"black"}}>
+                                Log Out
                              </span>
                         </Link>
                     </form>

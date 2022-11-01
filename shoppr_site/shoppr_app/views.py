@@ -59,7 +59,7 @@ def login_request(request):
 				print("got here 2")
 				response = {'status': 'ERROR'}
 				# return Response(response)
-				return Response(response, status = status.HTTP_400_BAD_REQUEST)
+				return Response(response, status = status.HTTP_200_OK)
 		else:
 			print("got here 3")
 			response = {'status': 'ERROR'}

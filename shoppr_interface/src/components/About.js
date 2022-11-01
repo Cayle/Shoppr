@@ -6,6 +6,7 @@ import NavBar from './NavBar';
 function About() {
     return (
         <div>
+            <NavBar/>
             <div>
                 <h1>
                     This is the About page. 

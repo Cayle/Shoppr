@@ -13,6 +13,7 @@ import Spinner from './components/Spinner';
 import ContactUs from './components/ContactUs';
 import Register from './components/Register';
 import LogIn from './components/LogIn';
+import FilterBar from './components/FilterBar';
 import { AuthContext } from './components/Context';
 
 function App() {
@@ -21,8 +22,27 @@ function App() {
     number_of_results: 0,
     results: [],
   }
+
   const [state, setState] = useState(initialState);
   const [loading, setLoading] = useState(false);
+  const [productItems, setProductItems] = useState([])
+
+  // function onFilter(filter) {
+  //   if (filter.store != '') {
+  //     const filteredItemsOne = productItems.filter((item) => (item.product_brand === filter.store));
+  //     setProductItems(filteredItemsOne);
+  //   }
+  //   console.log(productItems)
+  //   const filteredItemsTwo = productItems.filter( (item) => (item.product_sales_price >= parseInt(filter.min_price) && item.product_sales_price <= parseInt(filter.max_price)));
+  //   setProductItems(filteredItemsTwo);
+
+  //   console.log(productItems)
+  // }
+
+  function onFilter(filter) {
+    console.log("received the filters")
+    console.log(filter)
+  }
   
   const onSearch = async (text) => {
     console.log("got to app.js");
@@ -37,12 +57,18 @@ function App() {
     const data =  response.data;
     console.log(data);
 
-    setState(prevState => {
-      return { ...prevState, search_word: data.search_word, number_of_results: data.number_of_results, results: data.results }
-    })
-    console.log("finished the onSearch");
+    // setState( {search_word: data.search_word, number_of_results: data.number_of_results, results: data.results })
+    setState(data)
+    
     setLoading(false)
-    console.log(state.results);
+    console.log("These are state")
+    console.log(state);
+    const prodresults = state.results;
+    setProductItems(data.results)
+    console.log("these are the product items");
+    console.log(productItems)
+    console.log("finished the onSearch");
+
   };
 
 
@@ -50,6 +76,7 @@ function App() {
     console.log("got to home page");
     return (
       <div>
+        <NavBar/>
         <header className="bg-dark py-5">
             <div className="container px-4 px-lg-5 my-5">
               <Header/>
@@ -61,7 +88,8 @@ function App() {
           <section className='py-5'>
             <div className='container mt-5'>
               { loading && <Spinner/>}
-              <ProductList items={state.results}/>
+              { productItems.length != 0 && <FilterBar onFilter = {onFilter}/>}
+              <ProductList items={productItems}/>
             </div>
           </section>
         </div>
@@ -71,7 +99,7 @@ function App() {
   return (
     <AuthContext.Provider>
       <div className="App">
-        <NavBar/>
+        
         {/* <li class="nav-item"><Link className='nav-link' to='/about'>About</Link></li> */}
         <div className='routes-wrapper'>
           {/** 
@@ -85,7 +113,7 @@ function App() {
               <Route exact path='/contact-us' element= {<ContactUs/>} />
               <Route exact path='/' element = {HomePage()}/>
               <Route exact path='/register' element= {<Register/>} />
-              <Route exact path='/login' element = {<LogIn/>} />
+              <Route path='/account' element = {<LogIn/>} />
           </Routes>
         </div>
         <Footer/>

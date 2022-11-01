@@ -1,7 +1,7 @@
 import React from 'react';
 import '../style.css';
 import {Link} from  'react-router-dom'
-function NavBar() {
+function UserNavbar({loginStatus, userInfo}) {
     return (
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
@@ -24,29 +24,36 @@ function NavBar() {
                             </ul>
                         </li>
                     </ul>
-                    <form class="d-flex me-xl-4">
-                        <Link className='nav-link btn btn-outline-dark' to='/register'>
-                            <span style = { {'color':"black"}}>
-                                <i class="bi bi-person-circle"></i>
-                                Sign In
-                             </span>
-                        </Link>
-                    </form>
-                    {/* <span style={{'color': 'black', 'margin': 10+'px'}}>
-                        Welcome, <b>user_two !</b>
-                    </span> */}
+                    
+                    {
+                        loginStatus ? 
+                        <span style={{'color': 'black', 'margin': 10+'px'}}>
+                            Welcome, <b>{userInfo.username}</b>
+                        </span> :
+                        <form class="d-flex me-xl-4">
+                            <Link className='nav-link btn btn-outline-dark' to='/register'>
+                                <span style = { {'color':"black"}}>
+                                    <i class="bi bi-person-circle"></i>
+                                    Sign In
+                                </span>
+                            </Link>
+                        </form>
+                    }
+                    
                     <form class="d-flex">
-                        <Link className='nav-link btn btn-outline-dark' to='/login'>
-                            <span style = { {'color':"black"}}>
-                                <i class="bi bi-person-circle"></i>
-                                Log In
-                             </span>
-                        </Link>
-                        {/* <Link className='nav-link btn btn-outline-dark' to='/logout'>
-                            <span style = { {'color':"black"}}>
-                                Log Out
-                             </span>
-                        </Link> */}
+                        { loginStatus ? 
+                            <Link className='nav-link btn btn-outline-dark' to='/logout'>
+                                <span style = { {'color':"black"}}>
+                                    Log Out
+                                </span>
+                            </Link> : 
+                            <Link className='nav-link btn btn-outline-dark' to='/login'>
+                                <span style = { {'color':"black"}}>
+                                    <i class="bi bi-person-circle"></i>
+                                    Log In
+                                </span>
+                             </Link>
+                        }
                     </form>
                 </div>
             </div>
@@ -54,4 +61,4 @@ function NavBar() {
     );
 }
 
-export default NavBar;
+export default UserNavbar;

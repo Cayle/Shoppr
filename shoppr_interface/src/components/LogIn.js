@@ -1,14 +1,19 @@
 import {useState, React} from 'react';
 import '../style.css';
+import {Routes, Route} from  'react-router-dom';
 import ShopprBase from './../api/ShopprBase';
 import {Link, Navigate, useNavigate} from  'react-router-dom';
+import Dashboard from './Dashboard';
+import UserNavbar from './UserNavbar';
 
 import axios from 'axios';
 
 function LogIn() {
-    const intialLoginInfo = {username: '', password: ''};
+    const intialLoginInfo = {username: '', password: ''}; // this is provided by the user in the login form
+    const initialUserInfo = {id : '', username: '', encrypted_password:  ''}; // this is retrieved information about the user from the backend.
     const [loginInfo, setLoginInfo] = useState(intialLoginInfo);
     const [loginSuccess, setLoginSuccess] = useState(0) // 1 for true, -1 for false
+    const [currentUserInfo, setcurrentUserInfo] = useState(initialUserInfo)
 
     const navigate = useNavigate();
 
@@ -22,6 +27,8 @@ function LogIn() {
             console.log(response.data);
             if (response.data.status === "OK" ) {
               setLoginSuccess(1)
+              setcurrentUserInfo({username: response.data.user.username, 
+              password: response.data.user.password, id: response.data.user.id})
             } else if (response.data.status == "ERROR") {
               setLoginSuccess(-1)
             }
@@ -37,6 +44,8 @@ function LogIn() {
 
     function LoginForm() {
         return (
+          <div>
+            <UserNavbar loginStatus={ true ? loginSuccess == 1 : false} userInfo = {currentUserInfo}/>
             <section class="vh-30" style={ {'background-color': '#eee'} }>
             <div class="container h-100">
               <div class="row d-flex justify-content-center align-items-center h-100">
@@ -47,7 +56,7 @@ function LogIn() {
                         <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                         { loginSuccess === 1 &&
                           <div class='alert-success' style={{borderRadius: 10 +'px', padding: 10 + 'px'}}>
-                            <span>User logged in successfully</span> <Link className='text-success' to='/'> Go home </Link>
+                            <span>User logged in successfully, redirecting ...</span>
                           </div> }
                         { loginSuccess === -1 && 
                           <div class='alert-warning' style={{borderRadius: 10 +'px', padding: 10 + 'px'}}>
@@ -108,12 +117,14 @@ function LogIn() {
               </div>
             </div>
           </section>
+        </div>
         );
     }
 
     return (
         <div>
-            {LoginForm()}
+          {loginSuccess == 1 ? < Dashboard userInfo = {currentUserInfo}/> : LoginForm()}
+            
         </div>
     );
 }

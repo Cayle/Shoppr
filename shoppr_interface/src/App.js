@@ -27,22 +27,24 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [productItems, setProductItems] = useState([])
 
-  // function onFilter(filter) {
-  //   if (filter.store != '') {
-  //     const filteredItemsOne = productItems.filter((item) => (item.product_brand === filter.store));
-  //     setProductItems(filteredItemsOne);
-  //   }
-  //   console.log(productItems)
-  //   const filteredItemsTwo = productItems.filter( (item) => (item.product_sales_price >= parseInt(filter.min_price) && item.product_sales_price <= parseInt(filter.max_price)));
-  //   setProductItems(filteredItemsTwo);
-
-  //   console.log(productItems)
-  // }
-
   function onFilter(filter) {
-    console.log("received the filters")
-    console.log(filter)
+    if (filter.store != '') {
+      const filteredItemsOne = productItems.filter((item) => (item.product_brand === filter.store));
+      setProductItems(() => (filteredItemsOne));
+    }
+    console.log(productItems)
+    console.log(productItems.length)
+    const filteredItemsTwo = productItems.filter( (item) => (item.product_sales_price >= parseInt(filter.min_price) && item.product_sales_price <= parseInt(filter.max_price)));
+    setProductItems(() => (filteredItemsTwo));
+
+    console.log(productItems)
+    console.log(productItems.length)
   }
+
+  // function onFilter(filter) {
+  //   console.log("received the filters")
+  //   console.log(filter)
+  // }
   
   const onSearch = async (text) => {
     console.log("got to app.js");
@@ -51,22 +53,23 @@ function App() {
     // });
     // const results = response.data.Search;
     // console.log(results);
-    setState(initialState)
+    setState(() => (initialState))
+    setProductItems(() => {return []})
     setLoading(true)
     const response = await ShopprBase.get("/search/" + text);
     const data =  response.data;
     console.log(data);
 
-    // setState( {search_word: data.search_word, number_of_results: data.number_of_results, results: data.results })
-    setState(data)
+    // setState({search_word: data.search_word, number_of_results: data.number_of_results, results: data.results })
+    setState(() => {return data})
     
     setLoading(false)
     console.log("These are state")
     console.log(state);
     const prodresults = state.results;
-    setProductItems(data.results)
+    setProductItems(() => {return data.results})
     console.log("these are the product items");
-    console.log(productItems)
+    console.log(productItems.length)
     console.log("finished the onSearch");
 
   };

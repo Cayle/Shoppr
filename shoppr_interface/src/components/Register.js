@@ -45,7 +45,7 @@ function Register() {
                         <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                           { registrationSuccess && 
                           <div class='alert-success' style={{borderRadius: 10 +'px', padding: 10 + 'px'}}>
-                          <span>User registered successfully</span> <Link className='text-success' to='/login'> Login </Link>
+                          <span>User registered successfully</span> <Link className='text-success' to='/account'> Login </Link>
                         </div>}
                           
     

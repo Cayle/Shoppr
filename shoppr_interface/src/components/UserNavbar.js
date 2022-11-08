@@ -42,7 +42,7 @@ function UserNavbar({loginStatus, userInfo}) {
                     
                     <form class="d-flex">
                         { loginStatus ? 
-                            <Link className='nav-link btn btn-outline-dark' to='/logout'>
+                            <Link className='nav-link btn btn-outline-dark' to='/'>
                                 <span style = { {'color':"black"}}>
                                     Log Out
                                 </span>

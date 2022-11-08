@@ -19,7 +19,7 @@ function FilterBar({onFilter}) {
         <div className='row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center'>
             <div>
                 <input type="text" 
-                    onChange={(e) => {setFilters({min_price: e.target.value, ...filters})}} 
+                    onChange={(e) => {setFilters({min_price: e.target.value, max_price: filters.max_price, store: filters.store})}} 
                     value={filters.min_price} 
                     class="form-control" 
                     placeholder="Min price (in $)" 
@@ -27,7 +27,7 @@ function FilterBar({onFilter}) {
             </div>
             <div>
                 <input type="text" 
-                    onChange={(e) => {setFilters({max_price: e.target.value, ...filters})}} 
+                    onChange={(e) => {setFilters({max_price: e.target.value, min_price: filters.min_price, store: filters.store})}} 
                     value={filters.max_price} 
                     class="form-control" 
                     placeholder="Max price (in $)" 
@@ -38,10 +38,10 @@ function FilterBar({onFilter}) {
                     class="form-select form-select-lg mb-3" 
                     aria-label=".form-select-lg example"
                     value={filters.store}
-                    onChange={(e) => {setFilters({store: e.target.value, ...filters})}}>
+                    onChange={(e) => {setFilters({store: e.target.value, min_price: filters.min_price, max_price: filters.max_price})}}>
                     <option value ='' >Preferred store</option>
-                    <option value="Asos">Asos</option>
-                    <option value="Shein">Shein</option>
+                    <option value="asos">Asos</option>
+                    <option value="shein">Shein</option>
                 </select>
             </div>
             <div>

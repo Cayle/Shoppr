@@ -12,4 +12,6 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('login', views.login_request, name='login'),
     path('logout', views.logout_request, name='logout'),
+    path('wishlists/<int:user_id>', views.getUserWishlist, name = 'user_wishlist'),
+    path('wishlist/', views.addAWishlist, name =  'newWishlist'),
 ]

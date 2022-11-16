@@ -36,7 +36,7 @@ function NavBar() {
                         Welcome, <b>user_two !</b>
                     </span> */}
                     <form class="d-flex">
-                        <Link className='nav-link btn btn-outline-dark' to='/login'>
+                        <Link className='nav-link btn btn-outline-dark' to='/account'>
                             <span style = { {'color':"black"}}>
                                 <i class="bi bi-person-circle"></i>
                                 Log In

@@ -9,25 +9,7 @@ function Product({item}) {
       }
 
     return (
-        // <div class="col mb-5">
-        //     <div class="card h-100">              
-        //         <img class="card-img-top" src={item.product_img_url} alt={item.product_name} />
-        //         <div class="card-body p-4">
-        //             <div class="text-center">
-        //                 {/* Product Name */}
-        //                 <h5 class="fw-bolder">
-        //                     {item.product_name}
-        //                 </h5>
-        //                     {/* Product price */}
-        //                     $40.00 - $80.00
-        //             </div>
-        //         </div>
-        //         {/* Product actions  */}
-        //         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-        //             <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to wishlist</a></div>
-        //         </div>
-        //     </div>
-        // </div>
+  
         <div class="col mb-5" onClick={openInNewTab(item.product_url)}>
             <div class="card h-100">
                 {item.unit_discount !== "0" && <div class="badge bg-info text-white position-absolute" style={{top: 0.5+"rem", right: 0.5+"rem"}}>{item.unit_discount} % </div> }

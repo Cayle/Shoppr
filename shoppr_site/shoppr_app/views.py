@@ -1,11 +1,18 @@
+from curses.ascii import US
 import re
 from django.shortcuts import  render, redirect
+
+from django.core import serializers
 from .forms import NewUserForm
 from django.contrib import messages
+from .models import Product, WishListItem
+from .serializers import ProductSerializer, WishlistItemSerializer
+from django.contrib.auth.models import User
 
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm 
 
+from rest_framework.renderers import JSONRenderer
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -71,6 +78,63 @@ def login_request(request):
 	return Response(response)
 	# form = AuthenticationForm()
 	# return render(request, "shoppr_app/login.html", context={"login_form":form})
+
+@api_view(['POST'])
+def addAWishlist(request):
+	if request.method == "POST":
+		new_wishlist_data = request.data
+		product = Product(
+						product_id = new_wishlist_data.product_id,
+						store=new_wishlist_data.product_brand, 
+						name=new_wishlist_data.product_name, 
+						image_url =new_wishlist_data.product_img_url, 
+						url = new_wishlist_data.product_url, 
+						standard_price = new_wishlist_data.product_std_price, 
+						sales_price = new_wishlist_data.product_sales_price, 
+						unit_discount = new_wishlist_data.product_unit_discount)
+		try:
+			product.save()
+			print("Product saved")
+		except:
+			print("Error saving the product")
+		user = User.objects.get(id = new_wishlist_data.user_id)
+	
+		wishlist = WishListItem(user = user, product = product)
+		try:
+			wishlist.save()
+			print("Wishlist saved")
+		except:
+			print("Error saving wishlist item")
+	else:
+		print("Invalid request method")
+
+# @api_view(['GET'])
+def getUserWishlist(request, user_id):
+	# user_id = int(request.GET.get('user_id'))
+	print('entered')
+	print(f"User ID : {user_id}")
+	req_user = User.objects.get(id = user_id)
+	print("here")
+
+	user_wishlist_obj = WishListItem.objects.filter(user = req_user)
+	print(user_wishlist_obj)
+
+	user_wishlist_str = serializers.serialize('json', user_wishlist_obj)
+	print(user_wishlist_str)
+	
+	user_wishlist = json.loads(user_wishlist_str)
+	wishlist_products = [Product.objects.get(id = wishlist['fields']['product']) for wishlist in user_wishlist]
+	wishlist_products_json = json.loads(serializers.serialize('json', wishlist_products))
+
+	# return HttpResponse(user_wishlist_str, content_type='application/json')
+	
+	return  JsonResponse(wishlist_products_json, safe=False)
+
+	# user_wish_serialized = WishlistItemSerializer(user_wishlist)
+	# print(user_wish_serialized)
+	# response = JSONRenderer().render(user_wish_serialized.data)
+	# return response
+  
 
 @api_view(['POST'])
 def register(request):
